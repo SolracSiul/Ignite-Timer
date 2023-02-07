@@ -1,12 +1,23 @@
 import {Play} from 'phosphor-react'
 import { FormContainer, HomeContainer, Contador, Separador, BotaoHome, TaskInput, MinuteInput} from './styles'
+import { useState } from 'react'
+import {useForm} from 'react-hook-form';
 export function Home(){
-  return <>
+
+  const {register, handleSubmit, watch} = useForm()
+
+  function handleCreateNewCycle(data: any){
+    console.log(data)
+  }
+  const taskIsEmpty = watch('task')
+  return (
     <HomeContainer>
-      <form action="">
+      <form action="" onSubmit={handleSubmit(handleCreateNewCycle)}>
         <FormContainer>
           <label htmlFor="task">Minha Atividade: </label>
-          <TaskInput id="task" list="task-sugestions" placeholder='informe o nome da atividade'/>
+          <TaskInput id="task" list="task-sugestions" placeholder='informe o nome da atividade'
+          {...register('task')}
+          />
 
           <datalist id='task-sugestions'>
             <option value="Projeto 1"></option>
@@ -22,6 +33,7 @@ export function Home(){
            step={5}
            min={5}
            max={60}
+           {...register('qtdMinutos')}
            />
 
           <span>minutos</span>
@@ -34,11 +46,11 @@ export function Home(){
         <span>0</span>
         <span>0</span>
       </Contador>
-      <BotaoHome  disabled type="submit">
+      <BotaoHome  disabled={!taskIsEmpty} type="submit">
         <Play size={24}/>
         Começar
       </BotaoHome>
       </form>
     </HomeContainer>
-  </>
+)
 }

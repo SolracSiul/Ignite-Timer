@@ -57,9 +57,14 @@ export const HistoryList = styled.div`
         }
     }
 `
+const STATUS_COLORS = {
+    yellow: 'yellow-500',
+    green: 'green-500',
+    red: 'red-500'
+} as const 
 
 interface StatusProps{
-    sorak: 'yellow' | 'red' | 'green'
+    statusColor: keyof typeof STATUS_COLORS
 }
 export const Status = styled.span<StatusProps>`
     display: flex;
@@ -71,6 +76,6 @@ export const Status = styled.span<StatusProps>`
         width: 0.5rem;
         height: 0.5rem;
         border-radius: 9999px;
-        background-color: ${(props) => props.sorak};
+        background-color: ${(props) => props.theme[STATUS_COLORS[props.statusColor]]};
     }
 `

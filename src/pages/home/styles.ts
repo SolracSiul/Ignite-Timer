@@ -95,8 +95,9 @@ export const BotaoHome = styled.button`
   background: ${(props) => props.theme['green-500']};
   color: white;
 
-  &:not(:disabled):hover{
-    background: ${(props) => props.theme['green-700']};
+  &:disabled{
+    background: ${(props) => props.theme['green-700']}; 
     opacity: 0.7;
+    cursor: not-allowed;
   }
 `
