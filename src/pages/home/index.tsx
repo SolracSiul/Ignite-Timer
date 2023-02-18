@@ -1,18 +1,36 @@
 import {Play} from 'phosphor-react'
 import { FormContainer, HomeContainer, Contador, Separador, BotaoHome, TaskInput, MinuteInput} from './styles'
-import { useState } from 'react'
 import {useForm} from 'react-hook-form';
+import { zodResolver} from '@hookform/resolvers/zod'
+import * as zod from 'zod'
+
+const newCycleValidationSchema = zod.object({
+    task: zod.string().min(1, 'Informe a tarefa'),
+    qtdMinutos: zod.number().min(5).max(60, 'ciclo de no máximo 60 minutos'),
+})
+
+interface newCycleFormat {
+  task: string
+  qtdMinutos: number
+
+}
 export function Home(){
 
-  const {register, handleSubmit, watch} = useForm()
+  const {register, handleSubmit, watch} = useForm<newCycleFormat>({
+    resolver : zodResolver(newCycleValidationSchema),
+    defaultValues: {
+      task: '',
+      qtdMinutos: 0,
+    }
+  })
 
-  function handleCreateNewCycle(data: any){
-    console.log(data)
+  function handleCreateNewCycle(data: newCycleFormat){
+    console.log('oi')
   }
   const taskIsEmpty = watch('task')
   return (
     <HomeContainer>
-      <form action="" onSubmit={handleSubmit(handleCreateNewCycle)}>
+      <form onSubmit={handleSubmit(handleCreateNewCycle)}>
         <FormContainer>
           <label htmlFor="task">Minha Atividade: </label>
           <TaskInput id="task" list="task-sugestions" placeholder='informe o nome da atividade'
@@ -27,7 +45,7 @@ export function Home(){
           </datalist>
           <label htmlFor="qtdMinutos">durante</label>
           <MinuteInput 
-            type="number"
+          type="number"
            id="qtdMinutos"
            placeholder='60'
            step={5}
